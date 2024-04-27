@@ -1,15 +1,9 @@
 import { Button, View, Text, ScrollView } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ListProps, PeepsList, PeopleProps } from "./types";
-import { AddMdl, CreateNewMdl } from "./stuff/Modals";
+import { AddMdl, CreateNewMdl, RemoveMdl } from "./stuff/Modals";
 import { styles } from "./styles";
 const List = (props: ListProps) => {
-
-  // useEffect(() => {
-  //   //code here
-  //   console.log("STUF")
-  // }, [props.people]);
-
   return (
     <>
       <Text>Rounds: {props.rounds}</Text>
@@ -57,14 +51,19 @@ export default function App() {
     setAddMdlVisible(true);
   };
 
+  const [remMdlVisible, setRemMdlVisible] = useState(false);
+
+  const remove = () => {
+    setRemMdlVisible(true);
+  };
+
   const next = (skip: boolean = false) => {
     const length = people.length;
 
     setCurrId((i) => {
-
       if (!skip) {
         setPeople((peeps) => {
-          const newPeeps = [...peeps]
+          const newPeeps = [...peeps];
           // need to shallow copy so that single person lists work
 
           newPeeps[i] = { ...newPeeps[i], count: newPeeps[i].count + 1 };
@@ -87,7 +86,8 @@ export default function App() {
       <Button title="Create New" onPress={createNew} />
       {people.length ? (
         <>
-          <Button title="Add People" onPress={add} />
+          <Button title="Add" onPress={add} />
+          <Button title="Remove" onPress={remove} />
           <View style={styles.horizontal}>
             <View style={styles.button}>
               <Button title="Next" color="#006724" onPress={() => next()} />
@@ -124,6 +124,12 @@ export default function App() {
         setAddText={setAddText}
         addAfterId={addAfterId}
         setAddAfterId={setAddAfterId}
+      />
+      <RemoveMdl
+        modalVisible={remMdlVisible}
+        setModalVisible={setRemMdlVisible}
+        people={people}
+        setPeople={setPeople}
       />
     </View>
   );

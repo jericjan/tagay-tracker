@@ -61,3 +61,14 @@ export type PersonPickerProps = {
   selected: number;
   onChange: React.Dispatch<React.SetStateAction<number>>;
 };
+
+export type CheckboxListProps = {
+  items: PeepsList
+  onSave: (newPeeps: PeepsList) => void;
+}
+export type RemoveMdlProps = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;  
+  people: PeepsList;
+  setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
+}

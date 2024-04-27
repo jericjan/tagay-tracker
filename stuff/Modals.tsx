@@ -7,8 +7,10 @@ import {
   CreateNewMdlProps,
   PeepsList,
   AddMdlProps,
+  RemoveMdlProps,
 } from "../types";
 import { styles } from "../styles";
+import { CheckboxList } from "./CheckBox";
 
 function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
   return (
@@ -31,7 +33,7 @@ function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
 }
 
 export function CreateNewMdl(props: CreateNewMdlProps) {
-//   const [inputText, setInputText] = useState("");
+  //   const [inputText, setInputText] = useState("");
   const createSave = () => {
     // Here you can handle the input text, for example, save it to state or perform any other action.
     const peeps = props.text.trim().split("\n");
@@ -67,8 +69,11 @@ export function AddMdl(props: AddMdlProps) {
       .filter((str) => str.trim() != "");
 
     const newPeepsList: PeepsList = newPeeps.map((p, idx) => {
+      const oldIds = props.people.map((x) => x.id);
+      const lastId = Math.max(...oldIds);
+      console.log("last id is ", lastId);
       return {
-        id: idx + props.people.length,
+        id: idx + lastId + 1, // starts at idx=0, and we don't want to have the same id as lastId
         name: p,
         isCurrent: false,
         count: 0,
@@ -110,6 +115,36 @@ export function AddMdl(props: AddMdlProps) {
         selected: props.addAfterId,
       }}
     />
+  );
+}
+
+export function RemoveMdl(props: RemoveMdlProps) {
+  const submit = (removedPeeps: PeepsList) => {
+    const removedIds = removedPeeps.map((x) => x.id);
+    console.log(removedPeeps);
+    props.setModalVisible(false);
+    props.setPeople((oldPeeps) => {
+      // filter out ones tha are not in removedIds
+      return oldPeeps.filter((peep) => !removedIds.some((id) => id == peep.id));
+    });
+  };
+
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={props.modalVisible}
+      onRequestClose={() => {
+        props.setModalVisible(false);
+      }}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <CheckboxList items={props.people} onSave={submit} />
+          {/* <Button title="Save" onPress={submit} /> */}
+        </View>
+      </View>
+    </Modal>
   );
 }
 
