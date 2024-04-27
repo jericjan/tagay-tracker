@@ -28,4 +28,15 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%",
   },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    position: 'absolute',
+    bottom: 0,
+    margin:20
+  },
+  button: {
+    width: '37%'
+  }
 });

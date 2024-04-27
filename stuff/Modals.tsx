@@ -56,16 +56,14 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
 }
 
 export function AddMdl(props: AddMdlProps) {
-  const [addText, setAddText] = useState("");
-  const [addAfterId, setAddAfterId] = useState(-1);
 
   const add = () => {
     // Here you can handle the input text, for example, save it to state or perform any other action.
-    const newPeeps = addText
+    const newPeeps = props.addText
       .trim()
       .split("\n")
       .filter((str) => str.trim() != "");
-    console.log("1", newPeeps);
+
     const newPeepsList: PeepsList = newPeeps.map((p, idx) => {
       return {
         id: idx + props.people.length,
@@ -74,19 +72,29 @@ export function AddMdl(props: AddMdlProps) {
         count: 0,
       };
     });
-    console.log("2", newPeepsList);
+
     props.setPeople((oldList) => {
-      console.log("add after: ", addAfterId);
-      const index = oldList.findIndex((x) => {
-        return x.id == addAfterId;
-      });
-      console.log("index: ", index);
-      oldList.splice(index + 1, 0, ...newPeepsList);
+      const insertIdx = (() => {
+        if (props.addAfterId == -1) {
+          return props.people.length - 1;
+        } else {
+          return oldList.findIndex((x) => {
+            return x.id == props.addAfterId;
+          });
+        }
+      })();
+
+      const currIdx = props.curr;
+
+      if (insertIdx < currIdx) {
+        props.setCurr((i) => i + newPeepsList.length);
+      }
+
+      oldList.splice(insertIdx + 1, 0, ...newPeepsList);
       return oldList;
     });
-    console.log("3", props.people);
+
     props.setModalVisible(false);
-    console.log("4");
   };
 
   return (
@@ -95,10 +103,9 @@ export function AddMdl(props: AddMdlProps) {
         ...props,
         isAdding: true,
         onSave: add,
-        inputText: addText,
-        setInputText: setAddText,
-        selected: addAfterId,
-        setAddAfterIdx: setAddAfterId,
+        inputText: props.addText,
+        setInputText: props.setAddText,
+        selected: props.addAfterId,
       }}
     />
   );
@@ -127,7 +134,7 @@ export function GeneralModal({ props }: GeneralMdlProps) {
           {props.isAdding ? (
             <PersonPicker
               people={props.people}
-              onChange={props.setAddAfterIdx as any}
+              onChange={props.setAddAfterId as any}
               selected={props.selected as any}
             />
           ) : (

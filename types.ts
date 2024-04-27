@@ -4,13 +4,13 @@ export type PeepsList = PeepsItem[];
 export type PeepsItem = {
   id: number;
   name: string;
-  isCurrent: boolean;
   count: number;
 };
 
 export type ListProps = {
   people: PeepsList;
   curr: number;
+  rounds: number;
 };
 
 export type PeopleProps = {
@@ -19,31 +19,37 @@ export type PeopleProps = {
   idx: number;
 };
 
-export type AddMdlProps = {
+export type ChildMdlProps = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   people: PeepsList;
   setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
 };
 
-export type CreateNewMdlProps = AddMdlProps & {
+export type AddMdlProps = ChildMdlProps & {
+  curr: number;
+  setCurr: React.Dispatch<React.SetStateAction<number>>;
+  addText: string;
+  setAddText: React.Dispatch<React.SetStateAction<string>>;
+  addAfterId: number;
+  setAddAfterId: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export type CreateNewMdlProps = ChildMdlProps & {
   setId: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export type BaseMdlProps = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  inputText: string;
-  setInputText: React.Dispatch<React.SetStateAction<string>>;
-  onSave: () => void;
-  people: PeepsList;
-};
-
 export type GeneralMdlProps = {
-  props: BaseMdlProps & {
+  props: {
+    modalVisible: boolean;
+    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    inputText: string;
+    setInputText: React.Dispatch<React.SetStateAction<string>>;
+    onSave: () => void;
+    people: PeepsList;
     isAdding: boolean;
     selected?: number;
-    setAddAfterIdx?: React.Dispatch<React.SetStateAction<number>>;
+    setAddAfterId?: React.Dispatch<React.SetStateAction<number>>;
   };
 };
 
