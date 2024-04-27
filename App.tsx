@@ -1,13 +1,14 @@
 import { Modal, StyleSheet, Button, View, TextInput, Text } from "react-native";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { ListProps, PeepsDict, PeopleProps } from "./types";
 // You can import supported modules from npm
 // import { Card } from 'react-native-paper';
 
 // or any files within the Snack
 // import AssetExample from './components/AssetExample';
 
-const List = ({ people, setPeople, curr }) => {
-  const handleToggleCurrent = (id) => {
+const List = ({ people, setPeople, curr }: ListProps) => {
+  const handleToggleCurrent = (id: number) => {
     setPeople((prevPeople) =>
       prevPeople.map((person) =>
         person.id === id ? { ...person, isCurrent: !person.isCurrent } : person
@@ -15,7 +16,7 @@ const List = ({ people, setPeople, curr }) => {
     );
   };
 
-  const [peopleComp, setpeopleComp] = useState([]);
+  // const [peopleComp, setpeopleComp] = useState([]);
 
   // useEffect(() => {
   //   setpeopleComp(() => {
@@ -39,7 +40,7 @@ const List = ({ people, setPeople, curr }) => {
   );
 };
 
-const People = ({ person, onToggleCurrent, curr }) => {
+const People = ({ person, curr }: PeopleProps) => {
   const styles = curr == person.id ? { backgroundColor: "red" } : {};
 
   return (
@@ -53,7 +54,7 @@ export default function App() {
   const [currIdx, setCurrIdx] = useState(0);
 
   // list of dicts with id and name
-  const [people, setPeople] = useState([]);
+  const [people, setPeople] = useState([] as PeepsDict);
 
   function add() {
     setModalVisible(true);
@@ -62,7 +63,7 @@ export default function App() {
   const handleSave = () => {
     // Here you can handle the input text, for example, save it to state or perform any other action.
     const peeps = inputText.trim().split("\n");
-    const peepsDict = peeps.map((p, idx) => {
+    const peepsDict: PeepsDict = peeps.map((p, idx) => {
       return { id: idx, name: p, isCurrent: idx == 0 ? true : false };
     });
     setPeople(peepsDict);
