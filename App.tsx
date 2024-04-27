@@ -1,4 +1,4 @@
-import { Button, View, Text } from "react-native";
+import { Button, View, Text, ScrollView } from "react-native";
 import { useState } from "react";
 import { ListProps, PeepsList, PeopleProps } from "./types";
 import { AddMdl, CreateNewMdl } from "./stuff/Modals";
@@ -7,9 +7,14 @@ const List = (props: ListProps) => {
   return (
     <>
       <Text>Rounds: {props.rounds}</Text>
-      {props.people.map((person, idx) => (
-        <People key={person.id} person={person} curr={props.curr} idx={idx} />
-      ))}
+      <ScrollView
+        style={styles.scrollbox}
+        contentContainerStyle={styles.alignCenter}
+      >
+        {props.people.map((person, idx) => (
+          <People key={person.id} person={person} curr={props.curr} idx={idx} />
+        ))}
+      </ScrollView>
     </>
   );
 };
@@ -28,11 +33,14 @@ export default function App() {
   const [currId, setCurrId] = useState(0);
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
+
   const [createMdlVisible, setCreateMdlVisible] = useState(false);
-  // const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState("");
   function createNew() {
+    setInputText("")
     setCreateMdlVisible(true);
   }
+
   const [addMdlVisible, setAddMdlVisible] = useState(false);
   const [addText, setAddText] = useState("");
   const [addAfterId, setAddAfterId] = useState(-1);
@@ -72,10 +80,10 @@ export default function App() {
           <Button title="Add People" onPress={add} />
           <View style={styles.horizontal}>
             <View style={styles.button}>
-              <Button title="Next" onPress={() => next()} />
+              <Button title="Next" color="#006724" onPress={() => next()} />
             </View>
             <View style={styles.button}>
-              <Button title="Skip" onPress={() => next(true)} />
+              <Button title="Skip" color="#e10b00" onPress={() => next(true)} />
             </View>
           </View>
 
@@ -91,6 +99,9 @@ export default function App() {
         people={people}
         setPeople={setPeople}
         setId={setCurrId}
+        text={inputText}
+        setText={setInputText}
+        setRounds={setRoundCount}
       />
       <AddMdl
         modalVisible={addMdlVisible}
@@ -103,7 +114,7 @@ export default function App() {
         setAddText={setAddText}
         addAfterId={addAfterId}
         setAddAfterId={setAddAfterId}
-        // setId={setCurrId}set
+
       />
     </View>
   );

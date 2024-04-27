@@ -37,6 +37,9 @@ export type AddMdlProps = ChildMdlProps & {
 
 export type CreateNewMdlProps = ChildMdlProps & {
   setId: React.Dispatch<React.SetStateAction<number>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  setRounds: React.Dispatch<React.SetStateAction<number>>;
 };
 
 export type GeneralMdlProps = {

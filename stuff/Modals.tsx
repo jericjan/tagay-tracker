@@ -1,4 +1,4 @@
-import { Modal, View, TextInput, Button } from "react-native";
+import { Modal, View, TextInput, Button, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 import {
@@ -9,30 +9,32 @@ import {
   AddMdlProps,
 } from "../types";
 import { styles } from "../styles";
-import { useState } from "react";
 
 function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
   return (
-    <Picker
-      selectedValue={selected == -1 ? people[people.length - 1].id : selected}
-      onValueChange={(val, _idx) => {
-        console.log(`${val} has been selected`);
-        onChange(val);
-        //id isn't necessarily the index
-      }}
-    >
-      {people.map((x) => {
-        return <Picker.Item label={x.name} value={x.id} key={x.id} />;
-      })}
-    </Picker>
+    <>
+      <Text>Add after:</Text>
+      <Picker
+        selectedValue={selected == -1 ? people[people.length - 1].id : selected}
+        onValueChange={(val, _idx) => {
+          console.log(`${val} has been selected`);
+          onChange(val);
+          //id isn't necessarily the index
+        }}
+      >
+        {people.map((x) => {
+          return <Picker.Item label={x.name} value={x.id} key={x.id} />;
+        })}
+      </Picker>
+    </>
   );
 }
 
 export function CreateNewMdl(props: CreateNewMdlProps) {
-  const [inputText, setInputText] = useState("");
+//   const [inputText, setInputText] = useState("");
   const createSave = () => {
     // Here you can handle the input text, for example, save it to state or perform any other action.
-    const peeps = inputText.trim().split("\n");
+    const peeps = props.text.trim().split("\n");
     const filteredPeeps = peeps.filter((str) => str.trim() != "");
     const peepsDict: PeepsList = filteredPeeps.map((p, idx) => {
       return { id: idx, name: p, isCurrent: idx == 0 ? true : false, count: 0 };
@@ -40,6 +42,7 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
     props.setPeople(peepsDict);
     props.setModalVisible(false);
     props.setId(0);
+    props.setRounds(0);
   };
 
   return (
@@ -48,15 +51,14 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
         ...props,
         isAdding: false,
         onSave: createSave,
-        inputText: inputText,
-        setInputText: setInputText,
+        inputText: props.text,
+        setInputText: props.setText,
       }}
     />
   );
 }
 
 export function AddMdl(props: AddMdlProps) {
-
   const add = () => {
     // Here you can handle the input text, for example, save it to state or perform any other action.
     const newPeeps = props.addText
