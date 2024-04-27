@@ -1,9 +1,15 @@
 import { Button, View, Text, ScrollView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ListProps, PeepsList, PeopleProps } from "./types";
 import { AddMdl, CreateNewMdl } from "./stuff/Modals";
 import { styles } from "./styles";
 const List = (props: ListProps) => {
+
+  // useEffect(() => {
+  //   //code here
+  //   console.log("STUF")
+  // }, [props.people]);
+
   return (
     <>
       <Text>Rounds: {props.rounds}</Text>
@@ -37,7 +43,7 @@ export default function App() {
   const [createMdlVisible, setCreateMdlVisible] = useState(false);
   const [inputText, setInputText] = useState("");
   function createNew() {
-    setInputText("")
+    setInputText("");
     setCreateMdlVisible(true);
   }
 
@@ -55,16 +61,20 @@ export default function App() {
     const length = people.length;
 
     setCurrId((i) => {
+
       if (!skip) {
         setPeople((peeps) => {
-          peeps[i] = { ...peeps[i], count: peeps[i].count + 1 };
-          return peeps;
+          const newPeeps = [...peeps]
+          // need to shallow copy so that single person lists work
+
+          newPeeps[i] = { ...newPeeps[i], count: newPeeps[i].count + 1 };
+          return newPeeps;
         });
       }
 
       const newIdx = (i + 1) % length;
       console.log(`idx: ${i} -> ${newIdx}`);
-      if (i > newIdx) {
+      if (i > newIdx || length == 1) {
         setRoundCount((i) => i + 1);
       }
 
@@ -114,7 +124,6 @@ export default function App() {
         setAddText={setAddText}
         addAfterId={addAfterId}
         setAddAfterId={setAddAfterId}
-
       />
     </View>
   );
