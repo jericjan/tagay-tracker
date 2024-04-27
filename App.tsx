@@ -1,40 +1,13 @@
 import { Modal, StyleSheet, Button, View, TextInput, Text } from "react-native";
 import { useState } from "react";
 import { ListProps, PeepsDict, PeopleProps } from "./types";
-// You can import supported modules from npm
-// import { Card } from 'react-native-paper';
 
-// or any files within the Snack
-// import AssetExample from './components/AssetExample';
-
-const List = ({ people, setPeople, curr }: ListProps) => {
-  const handleToggleCurrent = (id: number) => {
-    setPeople((prevPeople) =>
-      prevPeople.map((person) =>
-        person.id === id ? { ...person, isCurrent: !person.isCurrent } : person
-      )
-    );
-  };
-
-  // const [peopleComp, setpeopleComp] = useState([]);
-
-  // useEffect(() => {
-  //   setpeopleComp(() => {
-  //     console.log("peopel comp updated!");
-  //     return 
-  //   });
-  // }, [people]);
-
+const List = ({ people, curr }: ListProps) => {
   return (
     <>
       <Text>List of People</Text>
       {people.map((person) => (
-        <People
-          key={person.id}
-          person={person}
-          onToggleCurrent={handleToggleCurrent}
-          curr={curr}
-        />
+        <People key={person.id} person={person} curr={curr} />
       ))}
     </>
   );
@@ -43,9 +16,7 @@ const List = ({ people, setPeople, curr }: ListProps) => {
 const People = ({ person, curr }: PeopleProps) => {
   const styles = curr == person.id ? { backgroundColor: "red" } : {};
 
-  return (
-      <Text style={styles}>{person.name}</Text>
-  );
+  return <Text style={styles}>{person.name}</Text>;
 };
 
 export default function App() {
@@ -71,25 +42,19 @@ export default function App() {
   };
 
   const next = () => {
-    // console.log("before ", JSON.stringify(people))
     const length = people.length;
-    // const isLast = (idx) => {
-    //     return idx == length - 1;
-    // };
 
     setCurrIdx((i) => {
       console.log("curr idx: ", i);
       return (i + 1) % length;
     });
-
-    // console.log("after ", JSON.stringify(people))
   };
 
   return (
     <View style={styles.container}>
       <Button title="Add People" onPress={add} />
       <Button title="Next" onPress={next} />
-      <List people={people} setPeople={setPeople} curr={currIdx} />
+      <List people={people} curr={currIdx} />
       <Modal
         animationType="slide"
         transparent={true}
@@ -113,14 +78,6 @@ export default function App() {
         </View>
       </Modal>
     </View>
-    // <SafeAreaView style={styles.container}>
-    //   <Text style={styles.paragraph}>
-    //     Change code in the editor and watch it change on your phone! Save to get a shareable url.
-    //   </Text>
-    //   <Card>
-    //     <AssetExample />
-    //   </Card>
-    // </SafeAreaView>
   );
 }
 

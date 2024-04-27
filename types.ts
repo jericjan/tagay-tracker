@@ -8,12 +8,10 @@ export type PeepsItem = {
 
 export type ListProps = {
     people: PeepsDict;
-    setPeople: React.Dispatch<React.SetStateAction<PeepsDict>>;
     curr: number;
 }
 
 export type PeopleProps = {
     person: PeepsItem;
-    onToggleCurrent:  (id: number) => void;
     curr: number;
 }
