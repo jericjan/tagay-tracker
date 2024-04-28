@@ -1,4 +1,4 @@
-import { Button, View, Text, ScrollView } from "react-native";
+import { Button, View, Text, ScrollView, StatusBar } from "react-native";
 import { useState } from "react";
 import { ListProps, PeepsList, PeopleProps } from "./types";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "./stuff/Modals";
@@ -83,7 +83,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar animated={true} backgroundColor="#ffffff" barStyle='dark-content' />
       <Button title="Create New" onPress={createNew} />
+      <View style={styles.measureBtn}>
+        <Button title="Measure" />
+      </View>
       {people.length ? (
         <>
           <Button title="Add" onPress={add} />

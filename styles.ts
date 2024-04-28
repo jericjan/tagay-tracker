@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "50%",
     flexGrow: 0,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   textInput: {
     borderColor: "gray",
@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     width: "100%",
-    height: "50%"
+    height: "50%",
     // flex: 5,
   },
   horizontal: {
@@ -50,5 +50,10 @@ export const styles = StyleSheet.create({
   },
   alignCenter: {
     alignItems: "center",
+  },
+  measureBtn: {
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
 });
