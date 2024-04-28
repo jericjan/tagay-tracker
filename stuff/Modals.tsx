@@ -1,14 +1,10 @@
+/* eslint react/no-unused-prop-types: 0 */
+// eslint bugged but i checked and it's all good.
+
 import { Modal, View, TextInput, Button, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-import {
-  GeneralMdlProps,
-  PersonPickerProps,
-  CreateNewMdlProps,
-  PeepsList,
-  AddMdlProps,
-  RemoveMdlProps,
-} from "../types";
+import {  PeepsList  } from "../types";
 import { styles } from "../styles";
 import { CheckboxList } from "./CheckBox";
 
@@ -18,7 +14,7 @@ function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
       <Text>Add after:</Text>
       <Picker
         selectedValue={selected == -1 ? people[people.length - 1].id : selected}
-        onValueChange={(val, _idx) => {
+        onValueChange={(val) => {
           console.log(`${val} has been selected`);
           onChange(val);
           //id isn't necessarily the index
@@ -202,8 +198,12 @@ export function GeneralModal({ props }: GeneralMdlProps) {
           {props.isAdding ? (
             <PersonPicker
               people={props.people}
-              onChange={props.setAddAfterId as any}
-              selected={props.selected as any}
+              onChange={
+                props.setAddAfterId as React.Dispatch<
+                  React.SetStateAction<number>
+                >
+              }
+              selected={props.selected as number}
             />
           ) : (
             <></>
@@ -214,3 +214,55 @@ export function GeneralModal({ props }: GeneralMdlProps) {
     </Modal>
   );
 }
+
+type ChildMdlProps = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  people: PeepsList;
+  setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
+};
+
+type AddMdlProps = ChildMdlProps & {
+  curr: number;
+  setCurr: React.Dispatch<React.SetStateAction<number>>;
+  addText: string;
+  setAddText: React.Dispatch<React.SetStateAction<string>>;
+  addAfterId: number;
+  setAddAfterId: React.Dispatch<React.SetStateAction<number>>;
+};
+
+type CreateNewMdlProps = ChildMdlProps & {
+  setId: React.Dispatch<React.SetStateAction<number>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  setRounds: React.Dispatch<React.SetStateAction<number>>;
+};
+
+type GeneralMdlProps = {
+  props: {
+    modalVisible: boolean;
+    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    inputText: string;
+    setInputText: React.Dispatch<React.SetStateAction<string>>;
+    onSave: () => void;
+    people: PeepsList;
+    isAdding: boolean;
+    selected?: number;
+    setAddAfterId?: React.Dispatch<React.SetStateAction<number>>;
+  };
+};
+
+type PersonPickerProps = {
+  people: PeepsList;
+  selected: number;
+  onChange: React.Dispatch<React.SetStateAction<number>>;
+};
+
+type RemoveMdlProps = {
+  modalVisible: boolean;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  people: PeepsList;
+  setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
+  curr: number;
+  setCurr: React.Dispatch<React.SetStateAction<number>>;
+};

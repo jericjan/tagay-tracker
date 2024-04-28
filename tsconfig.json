@@ -3,7 +3,7 @@
     "lib":["ES2023"],
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true    
+    "noUnusedParameters": true,
   },
   "extends": "expo/tsconfig.base"
 }

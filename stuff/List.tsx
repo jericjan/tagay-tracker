@@ -1,11 +1,10 @@
 import { LayoutRectangle, ScrollView, Text } from "react-native";
-import { ListProps, PeopleProps } from "../types";
+import { PeepsList, PeepsItem } from "../types";
 import { styles } from "../styles";
 import { useEffect, useRef } from "react";
 
 export const List = (props: ListProps) => {
-  const scrollViewRef = useRef(null);
-
+  const scrollViewRef = useRef<ScrollView>(null);
   return (
     <>
       <Text style={{ fontWeight: "bold" }}>Rounds: {props.rounds}</Text>
@@ -28,27 +27,40 @@ export const List = (props: ListProps) => {
   );
 };
 
-export const People = ({ person, curr, idx, scrollViewRef }: PeopleProps) => {
+export const People = (props: PeopleProps) => {
   const textLayout = useRef<LayoutRectangle>();
-  const isCurr = curr == idx;
+  const isCurr = props.curr == props.idx;
 
   useEffect(() => {
     //code here
     if (isCurr && textLayout.current) {
-      (scrollViewRef.current as any).scrollTo({
+      props.scrollViewRef.current?.scrollTo({
         y: textLayout.current.y,
         animated: true,
       });
     }
-  }, [curr]);
+  }, [props.curr]);
 
   return (
     <Text
       onLayout={(evt) => (textLayout.current = evt.nativeEvent.layout)}
       style={isCurr ? styles.selectedPerson : {}}
     >
-      <Text>{person.name}</Text>
-      <Text> - {person.count}x</Text>
+      <Text>{props.person.name}</Text>
+      <Text> - {props.person.count}x</Text>
     </Text>
   );
+};
+
+type ListProps = {
+  people: PeepsList;
+  curr: number;
+  rounds: number;
+};
+
+type PeopleProps = {
+  person: PeepsItem;
+  curr: number;
+  idx: number;
+  scrollViewRef: React.RefObject<ScrollView>;
 };
