@@ -1,3 +1,4 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type PeepsList = PeepsItem[];
@@ -82,7 +83,7 @@ export type RootStackParamList = {
   Measure: undefined;
 };
 
-export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
-export type MeasureProps = NativeStackScreenProps<RootStackParamList, 'Measure'>;
+export type HomeProps = BottomTabScreenProps<RootStackParamList, 'Home'>;
+export type MeasureProps = BottomTabScreenProps<RootStackParamList, 'Measure'>;
 
 export type Orientation = "portrait" | "landscape"
