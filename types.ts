@@ -1,3 +1,5 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
 export type PeepsList = PeepsItem[];
 
 /**`count` is how many times they've drunk */
@@ -74,3 +76,12 @@ export type RemoveMdlProps = {
   curr: number;
   setCurr: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export type RootStackParamList = {
+  Home: undefined;
+  Measure: undefined;
+};
+
+export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+export type MeasureProps = NativeStackScreenProps<RootStackParamList, 'Measure'>;
+
