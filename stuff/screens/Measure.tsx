@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { MeasureProps, Orientation } from "../../types";
 import { useRef, useState } from "react";
+import { styles as globalStyles } from "../../styles";
 
 export default function MeasurePage({ navigation }: MeasureProps) {
   const { width, height } = Dimensions.get("window");
@@ -54,7 +55,6 @@ export default function MeasurePage({ navigation }: MeasureProps) {
     PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
-
         function haveSameSign(num1: number, num2: number) {
           return Math.sign(num1) === Math.sign(num2);
         }
@@ -128,7 +128,7 @@ export default function MeasurePage({ navigation }: MeasureProps) {
   return (
     <View style={styles.container}>
       <StatusBar animated={true} hidden={true} />
-      <View style={styles.button}>
+      <View style={{ ...styles.button, ...globalStyles.horizontalButCenter }}>
         <Button title="Rotate" onPress={rotate} />
         <Button title="Back" onPress={() => navigation.navigate("Home")} />
       </View>

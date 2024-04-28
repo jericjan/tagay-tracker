@@ -5,10 +5,7 @@ import { styles } from "../../styles";
 import { List } from "../List";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
 
-
-
 const Home = ({ navigation }: HomeProps) => {
-  
   const [currIdx, setCurrIdx] = useState(0);
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
@@ -76,8 +73,10 @@ const Home = ({ navigation }: HomeProps) => {
       </View>
       {people.length ? (
         <>
-          <Button title="Add" onPress={add} />
-          <Button title="Remove" onPress={remove} />
+          <View style={styles.horizontalButCenter}>
+            <Button title="Add" onPress={add} />
+            <Button title="Remove" onPress={remove} />
+          </View>
           <View style={styles.horizontal}>
             <View style={styles.button}>
               <Button title="Next" color="#006724" onPress={() => next()} />

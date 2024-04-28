@@ -56,4 +56,17 @@ export const styles = StyleSheet.create({
     top: 0,
     right: 0,
   },
+  selectedPerson: {
+    backgroundColor: "rgb(215 200 42)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    fontSize: 30
+  },
+  horizontalButCenter: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    margin: 10,
+  },
 });
