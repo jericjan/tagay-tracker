@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { HomeProps, PeepsList } from "../../types";
-import { Button, StatusBar, View, ImageBackground } from "react-native";
+import { Button, StatusBar, View } from "react-native";
 import { styles } from "../../styles";
 import { List } from "../List";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
+import { DefaultBackground } from "../Background";
 
 const Home = ({ navigation }: HomeProps) => {
   const [currIdx, setCurrIdx] = useState(0);
@@ -59,10 +60,7 @@ const Home = ({ navigation }: HomeProps) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={{ ...styles.container, width: "100%" }}
-        source={require("./really_cool_image.jpg")}
-      >
+      <DefaultBackground>
         <StatusBar
           animated={true}
           backgroundColor="#ffffff"
@@ -130,7 +128,7 @@ const Home = ({ navigation }: HomeProps) => {
           curr={currIdx}
           setCurr={setCurrIdx}
         />
-      </ImageBackground>
+      </DefaultBackground>
     </View>
   );
 };

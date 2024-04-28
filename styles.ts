@@ -62,6 +62,16 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     fontSize: 30,
+
+    // https://ethercreative.github.io/react-native-shadow-generator/
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.36,
+    shadowRadius: 6.68,
+    elevation: 11,
   },
   horizontalButCenter: {
     display: "flex",

@@ -1,5 +1,4 @@
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type PeepsList = PeepsItem[];
 
@@ -20,7 +19,7 @@ export type PeopleProps = {
   person: PeepsItem;
   curr: number;
   idx: number;
-  scrollViewRef: React.MutableRefObject<null>
+  scrollViewRef: React.MutableRefObject<null>;
 };
 
 export type ChildMdlProps = {
@@ -67,24 +66,29 @@ export type PersonPickerProps = {
 };
 
 export type CheckboxListProps = {
-  items: PeepsList
+  items: PeepsList;
   onSave: (newPeeps: PeepsList) => void;
-}
+};
 export type RemoveMdlProps = {
   modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;  
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   people: PeepsList;
   setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
   curr: number;
   setCurr: React.Dispatch<React.SetStateAction<number>>;
-}
+};
 
 export type RootStackParamList = {
   Home: undefined;
   Measure: undefined;
 };
 
-export type HomeProps = BottomTabScreenProps<RootStackParamList, 'Home'>;
-export type MeasureProps = BottomTabScreenProps<RootStackParamList, 'Measure'>;
+export type HomeProps = BottomTabScreenProps<RootStackParamList, "Home">;
+export type MeasureProps = BottomTabScreenProps<RootStackParamList, "Measure">;
 
-export type Orientation = "portrait" | "landscape"
+export type Orientation = "portrait" | "landscape";
+
+export type DefaultBackgroundProps = {
+  children: JSX.Element[];
+  opacity?: number;
+};

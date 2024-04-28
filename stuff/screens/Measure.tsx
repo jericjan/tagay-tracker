@@ -11,6 +11,7 @@ import {
 import { MeasureProps, Orientation } from "../../types";
 import { useRef, useState } from "react";
 import { styles as globalStyles } from "../../styles";
+import { DefaultBackground } from "../Background";
 
 export default function MeasurePage({ navigation }: MeasureProps) {
   const { width, height } = Dimensions.get("window");
@@ -105,6 +106,7 @@ export default function MeasurePage({ navigation }: MeasureProps) {
       fontSize: 14,
       lineHeight: 24,
       fontWeight: "bold",
+      color: "white"
     },
     box: {
       ...boxCss[orientation],
@@ -128,14 +130,16 @@ export default function MeasurePage({ navigation }: MeasureProps) {
   return (
     <View style={styles.container}>
       <StatusBar animated={true} hidden={true} />
-      <View style={{ ...styles.button, ...globalStyles.horizontalButCenter }}>
-        <Button title="Rotate" onPress={rotate} />
-        <Button title="Back" onPress={() => navigation.navigate("Home")} />
-      </View>
-      <Text style={styles.titleText}>Drag anywhere on the screen!</Text>
-      <View style={styles.draggableContainer} {...panResponder.panHandlers}>
-        <Animated.View style={[styles.box, transformOptions[orientation]]} />
-      </View>
+      <DefaultBackground opacity={0.5}>
+        <View style={{ ...styles.button, ...globalStyles.horizontalButCenter }}>
+          <Button title="Rotate" onPress={rotate} />
+          <Button title="Back" onPress={() => navigation.navigate("Home")} />
+        </View>
+        <Text style={styles.titleText}>Drag anywhere on the screen!</Text>
+        <View style={styles.draggableContainer} {...panResponder.panHandlers}>
+          <Animated.View style={[styles.box, transformOptions[orientation]]} />
+        </View>
+      </DefaultBackground>
     </View>
   );
 }
