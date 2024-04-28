@@ -30,7 +30,7 @@ const People = ({ person, curr, idx }: PeopleProps) => {
 };
 
 export default function App() {
-  const [currId, setCurrId] = useState(0);
+  const [currIdx, setCurrIdx] = useState(0);
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
 
@@ -60,7 +60,7 @@ export default function App() {
   const next = (skip: boolean = false) => {
     const length = people.length;
 
-    setCurrId((i) => {
+    setCurrIdx((i) => {
       if (!skip) {
         setPeople((peeps) => {
           const newPeeps = [...peeps];
@@ -97,7 +97,7 @@ export default function App() {
             </View>
           </View>
 
-          <List people={people} curr={currId} rounds={roundCount} />
+          <List people={people} curr={currIdx} rounds={roundCount} />
         </>
       ) : (
         <></>
@@ -108,7 +108,7 @@ export default function App() {
         setModalVisible={setCreateMdlVisible}
         people={people}
         setPeople={setPeople}
-        setId={setCurrId}
+        setId={setCurrIdx}
         text={inputText}
         setText={setInputText}
         setRounds={setRoundCount}
@@ -118,8 +118,8 @@ export default function App() {
         setModalVisible={setAddMdlVisible}
         people={people}
         setPeople={setPeople}
-        curr={currId}
-        setCurr={setCurrId}
+        curr={currIdx}
+        setCurr={setCurrIdx}
         addText={addText}
         setAddText={setAddText}
         addAfterId={addAfterId}
@@ -130,6 +130,8 @@ export default function App() {
         setModalVisible={setRemMdlVisible}
         people={people}
         setPeople={setPeople}
+        curr={currIdx}
+        setCurr={setCurrIdx}
       />
     </View>
   );

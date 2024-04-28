@@ -120,12 +120,43 @@ export function AddMdl(props: AddMdlProps) {
 
 export function RemoveMdl(props: RemoveMdlProps) {
   const submit = (removedPeeps: PeepsList) => {
+    // ID !== idx
+    const currId = props.people[props.curr].id;
+
     const removedIds = removedPeeps.map((x) => x.id);
     console.log(removedPeeps);
     props.setModalVisible(false);
     props.setPeople((oldPeeps) => {
       // filter out ones tha are not in removedIds
-      return oldPeeps.filter((peep) => !removedIds.some((id) => id == peep.id));
+      const currDeletable = removedIds.includes(currId);
+
+      const newPeeps = (() => {
+        if (currDeletable) {
+          return oldPeeps.filter(
+            (peep) => !removedIds.includes(peep.id) || peep.id == currId
+          );
+        } else {
+          return oldPeeps.filter((peep) => !removedIds.includes(peep.id));
+        }
+      })();
+
+      const newIdx = newPeeps.findIndex((x) => {
+        console.log(x.id, currId);
+        return x.id == currId;
+      });
+
+      if (currDeletable) {
+        // finally delete the curr that's supposed to be deleted
+        newPeeps.splice(newIdx, 1);
+      }
+
+      // update curr idx to id...
+      // newIdx will always have the current Idx even if it got deleted,
+      // thanks to above code in newPeeps
+      console.log("new idx", newIdx);
+      props.setCurr(newIdx % newPeeps.length);
+
+      return newPeeps;
     });
   };
 

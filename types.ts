@@ -71,4 +71,6 @@ export type RemoveMdlProps = {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;  
   people: PeepsList;
   setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
+  curr: number;
+  setCurr: React.Dispatch<React.SetStateAction<number>>;
 }

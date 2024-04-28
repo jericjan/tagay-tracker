@@ -31,6 +31,17 @@
       "eas": {
         "projectId": "1ef2249d-1550-4a06-bcb1-4346aa51c8f7"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true,
+          }
+        }
+      ]
+    ]
   }
 }
