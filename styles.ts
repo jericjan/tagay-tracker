@@ -61,12 +61,15 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 5,
-    fontSize: 30
+    fontSize: 30,
   },
   horizontalButCenter: {
     display: "flex",
     flexDirection: "row",
     gap: 10,
     margin: 10,
+  },
+  onTop: {
+    zIndex: 999,
   },
 });

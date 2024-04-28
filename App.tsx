@@ -10,8 +10,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        screenOptions ={{
-          tabBarStyle: { height: 0 }
+        screenOptions={{
+          tabBarStyle: { height: 0, position: "absolute", display: "none" },
         }}
       >
         <Tab.Screen

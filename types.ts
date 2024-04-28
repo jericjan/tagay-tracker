@@ -20,6 +20,7 @@ export type PeopleProps = {
   person: PeepsItem;
   curr: number;
   idx: number;
+  scrollViewRef: React.MutableRefObject<null>
 };
 
 export type ChildMdlProps = {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HomeProps, PeepsList } from "../../types";
-import { Button, StatusBar, View } from "react-native";
+import { Button, StatusBar, View, ImageBackground } from "react-native";
 import { styles } from "../../styles";
 import { List } from "../List";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
@@ -59,69 +59,78 @@ const Home = ({ navigation }: HomeProps) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        animated={true}
-        backgroundColor="#ffffff"
-        barStyle="dark-content"
-      />
-      <Button title="Create New" onPress={createNew} />
-      <View style={styles.measureBtn}>
-        <Button
-          title="Measure"
-          onPress={() => navigation.navigate("Measure")}
+      <ImageBackground
+        style={{ ...styles.container, width: "100%" }}
+        source={require("./really_cool_image.jpg")}
+      >
+        <StatusBar
+          animated={true}
+          backgroundColor="#ffffff"
+          barStyle="dark-content"
         />
-      </View>
-      {people.length ? (
-        <>
-          <View style={styles.horizontalButCenter}>
-            <Button title="Add" onPress={add} />
-            <Button title="Remove" onPress={remove} />
-          </View>
-          <View style={styles.horizontal}>
-            <View style={styles.button}>
-              <Button title="Next" color="#006724" onPress={() => next()} />
+        <Button title="Create New" onPress={createNew} />
+        <View style={styles.measureBtn}>
+          <Button
+            title="Measure"
+            onPress={() => navigation.navigate("Measure")}
+          />
+        </View>
+        {people.length ? (
+          <>
+            <View style={styles.horizontalButCenter}>
+              <Button title="Add" onPress={add} />
+              <Button title="Remove" onPress={remove} />
             </View>
-            <View style={styles.button}>
-              <Button title="Skip" color="#e10b00" onPress={() => next(true)} />
+            <View style={{ ...styles.horizontal, ...styles.onTop }}>
+              <View style={styles.button}>
+                <Button title="Next" color="#006724" onPress={() => next()} />
+              </View>
+              <View style={styles.button}>
+                <Button
+                  title="Skip"
+                  color="#e10b00"
+                  onPress={() => next(true)}
+                />
+              </View>
             </View>
-          </View>
 
-          <List people={people} curr={currIdx} rounds={roundCount} />
-        </>
-      ) : (
-        <></>
-      )}
+            <List people={people} curr={currIdx} rounds={roundCount} />
+          </>
+        ) : (
+          <></>
+        )}
 
-      <CreateNewMdl
-        modalVisible={createMdlVisible}
-        setModalVisible={setCreateMdlVisible}
-        people={people}
-        setPeople={setPeople}
-        setId={setCurrIdx}
-        text={inputText}
-        setText={setInputText}
-        setRounds={setRoundCount}
-      />
-      <AddMdl
-        modalVisible={addMdlVisible}
-        setModalVisible={setAddMdlVisible}
-        people={people}
-        setPeople={setPeople}
-        curr={currIdx}
-        setCurr={setCurrIdx}
-        addText={addText}
-        setAddText={setAddText}
-        addAfterId={addAfterId}
-        setAddAfterId={setAddAfterId}
-      />
-      <RemoveMdl
-        modalVisible={remMdlVisible}
-        setModalVisible={setRemMdlVisible}
-        people={people}
-        setPeople={setPeople}
-        curr={currIdx}
-        setCurr={setCurrIdx}
-      />
+        <CreateNewMdl
+          modalVisible={createMdlVisible}
+          setModalVisible={setCreateMdlVisible}
+          people={people}
+          setPeople={setPeople}
+          setId={setCurrIdx}
+          text={inputText}
+          setText={setInputText}
+          setRounds={setRoundCount}
+        />
+        <AddMdl
+          modalVisible={addMdlVisible}
+          setModalVisible={setAddMdlVisible}
+          people={people}
+          setPeople={setPeople}
+          curr={currIdx}
+          setCurr={setCurrIdx}
+          addText={addText}
+          setAddText={setAddText}
+          addAfterId={addAfterId}
+          setAddAfterId={setAddAfterId}
+        />
+        <RemoveMdl
+          modalVisible={remMdlVisible}
+          setModalVisible={setRemMdlVisible}
+          people={people}
+          setPeople={setPeople}
+          curr={currIdx}
+          setCurr={setCurrIdx}
+        />
+      </ImageBackground>
     </View>
   );
 };
