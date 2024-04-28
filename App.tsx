@@ -14,7 +14,11 @@ export default function App() {
           component={Home}
           options={{ title: "Tagay Tracker" }}
         />
-        <Stack.Screen name="Measure" component={MeasurePage} />
+        <Stack.Screen
+          name="Measure"
+          component={MeasurePage}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

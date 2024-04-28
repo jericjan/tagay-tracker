@@ -85,3 +85,4 @@ export type RootStackParamList = {
 export type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 export type MeasureProps = NativeStackScreenProps<RootStackParamList, 'Measure'>;
 
+export type Orientation = "portrait" | "landscape"
