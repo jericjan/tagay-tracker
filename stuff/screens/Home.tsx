@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { HomeProps, PeepsList } from "../../types";
+import { PeepsList, RootStackParamList } from "../../types";
 import { Button, StatusBar, View } from "react-native";
 import { styles } from "../../styles";
 import { List } from "../List";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
 import { DefaultBackground } from "../Background";
+import { ModalContext } from "../Contexts";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+
+type HomeProps = BottomTabScreenProps<RootStackParamList, "Home">;
 
 const Home = ({ navigation }: HomeProps) => {
   const [currIdx, setCurrIdx] = useState(0);
@@ -13,6 +17,7 @@ const Home = ({ navigation }: HomeProps) => {
 
   const [createMdlVisible, setCreateMdlVisible] = useState(false);
   const [inputText, setInputText] = useState("");
+  
   function createNew() {
     setInputText("");
     setCreateMdlVisible(true);
@@ -97,37 +102,29 @@ const Home = ({ navigation }: HomeProps) => {
         ) : (
           <></>
         )}
-
-        <CreateNewMdl
-          modalVisible={createMdlVisible}
-          setModalVisible={setCreateMdlVisible}
-          people={people}
-          setPeople={setPeople}
-          setId={setCurrIdx}
-          text={inputText}
-          setText={setInputText}
-          setRounds={setRoundCount}
-        />
-        <AddMdl
-          modalVisible={addMdlVisible}
-          setModalVisible={setAddMdlVisible}
-          people={people}
-          setPeople={setPeople}
-          curr={currIdx}
-          setCurr={setCurrIdx}
-          addText={addText}
-          setAddText={setAddText}
-          addAfterId={addAfterId}
-          setAddAfterId={setAddAfterId}
-        />
-        <RemoveMdl
-          modalVisible={remMdlVisible}
-          setModalVisible={setRemMdlVisible}
-          people={people}
-          setPeople={setPeople}
-          curr={currIdx}
-          setCurr={setCurrIdx}
-        />
+        <ModalContext.Provider
+          value={{ people, setPeople, currIdx, setCurrIdx }}
+        >
+          <CreateNewMdl
+            modalVisible={createMdlVisible}
+            setModalVisible={setCreateMdlVisible}
+            text={inputText}
+            setText={setInputText}
+            setRounds={setRoundCount}
+          />
+          <AddMdl
+            modalVisible={addMdlVisible}
+            setModalVisible={setAddMdlVisible}
+            addText={addText}
+            setAddText={setAddText}
+            addAfterId={addAfterId}
+            setAddAfterId={setAddAfterId}
+          />
+          <RemoveMdl
+            modalVisible={remMdlVisible}
+            setModalVisible={setRemMdlVisible}
+          />
+        </ModalContext.Provider>
       </DefaultBackground>
     </View>
   );

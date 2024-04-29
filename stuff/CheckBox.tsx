@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet, ScrollView } from "react-native";
-import { CheckboxListProps, PeepsItem, PeepsList } from "../types";
+import { PeepsItem, PeepsList } from "../types";
 
 export const CheckboxList = (props: CheckboxListProps) => {
   const [selectedItems, setSelectedItems] = useState([] as PeepsList);
@@ -40,7 +40,6 @@ export const CheckboxList = (props: CheckboxListProps) => {
             { backgroundColor: pressed ? "#CCCCCC" : "#007bff" },
           ]}
           onPress={() => {
-            // Do something with the selected items
             props.onSave(selectedItems);
           }}
         >
@@ -53,8 +52,6 @@ export const CheckboxList = (props: CheckboxListProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flexGrow: 1,
-    // padding: 10,
     height: '100%'
   },
   item: {
@@ -82,3 +79,8 @@ const styles = StyleSheet.create({
     maxHeight: "80%",
   },
 });
+
+type CheckboxListProps = {
+  items: PeepsList;
+  onSave: (newPeeps: PeepsList) => void;
+};

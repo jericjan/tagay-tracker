@@ -1,6 +1,10 @@
 import { ImageBackground } from "react-native";
 import { styles } from "../styles";
-import { DefaultBackgroundProps } from "../types";
+
+export type DefaultBackgroundProps = {
+  children: JSX.Element[];
+  opacity?: number;
+};
 
 export const DefaultBackground = (props: DefaultBackgroundProps) => {
   if (!props.opacity) {

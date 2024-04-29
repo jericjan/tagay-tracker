@@ -23,7 +23,7 @@
     }
   },
   "rules": {
-    "react/no-unused-prop-types": "error",
+    "react/no-unused-prop-types": "warn",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off"
     //add customize rules here as per your project's needs

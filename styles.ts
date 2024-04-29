@@ -30,7 +30,6 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%",
     height: "50%",
-    // flex: 5,
   },
   horizontal: {
     flexDirection: "row",

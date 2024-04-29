@@ -1,12 +1,13 @@
-/* eslint react/no-unused-prop-types: 0 */
-// eslint bugged but i checked and it's all good.
+
 
 import { Modal, View, TextInput, Button, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-import {  PeepsList  } from "../types";
+import { PeepsList } from "../types";
 import { styles } from "../styles";
 import { CheckboxList } from "./CheckBox";
+import { useContext } from "react";
+import { ModalContext } from "./Contexts";
 
 function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
   return (
@@ -29,17 +30,17 @@ function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
 }
 
 export function CreateNewMdl(props: CreateNewMdlProps) {
-  //   const [inputText, setInputText] = useState("");
+  const { setPeople, setCurrIdx } = useContext(ModalContext);
+  const { modalVisible } = props; // prop drill :(
   const createSave = () => {
-    // Here you can handle the input text, for example, save it to state or perform any other action.
     const peeps = props.text.trim().split("\n");
     const filteredPeeps = peeps.filter((str) => str.trim() != "");
     const peepsDict: PeepsList = filteredPeeps.map((p, idx) => {
       return { id: idx, name: p, isCurrent: idx == 0 ? true : false, count: 0 };
     });
-    props.setPeople(peepsDict);
+    setPeople(peepsDict);
     props.setModalVisible(false);
-    props.setId(0);
+    setCurrIdx(0);
     props.setRounds(0);
   };
 
@@ -47,6 +48,7 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
     <GeneralModal
       props={{
         ...props,
+        modalVisible,
         isAdding: false,
         onSave: createSave,
         inputText: props.text,
@@ -57,15 +59,16 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
 }
 
 export function AddMdl(props: AddMdlProps) {
+  const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
+  const { modalVisible, setAddAfterId } = props; // prop drill :(
   const add = () => {
-    // Here you can handle the input text, for example, save it to state or perform any other action.
     const newPeeps = props.addText
       .trim()
       .split("\n")
       .filter((str) => str.trim() != "");
 
     const newPeepsList: PeepsList = newPeeps.map((p, idx) => {
-      const oldIds = props.people.map((x) => x.id);
+      const oldIds = people.map((x) => x.id);
       const lastId = Math.max(...oldIds);
       console.log("last id is ", lastId);
       return {
@@ -76,10 +79,10 @@ export function AddMdl(props: AddMdlProps) {
       };
     });
 
-    props.setPeople((oldList) => {
+    setPeople((oldList) => {
       const insertIdx = (() => {
         if (props.addAfterId == -1) {
-          return props.people.length - 1;
+          return people.length - 1;
         } else {
           return oldList.findIndex((x) => {
             return x.id == props.addAfterId;
@@ -87,10 +90,8 @@ export function AddMdl(props: AddMdlProps) {
         }
       })();
 
-      const currIdx = props.curr;
-
       if (insertIdx < currIdx) {
-        props.setCurr((i) => i + newPeepsList.length);
+        setCurrIdx((i) => i + newPeepsList.length);
       }
 
       oldList.splice(insertIdx + 1, 0, ...newPeepsList);
@@ -109,20 +110,23 @@ export function AddMdl(props: AddMdlProps) {
         inputText: props.addText,
         setInputText: props.setAddText,
         selected: props.addAfterId,
+        modalVisible,
+        setAddAfterId,
       }}
     />
   );
 }
 
 export function RemoveMdl(props: RemoveMdlProps) {
+  const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
   const submit = (removedPeeps: PeepsList) => {
     // ID !== idx
-    const currId = props.people[props.curr].id;
+    const currId = people[currIdx].id;
 
     const removedIds = removedPeeps.map((x) => x.id);
     console.log(removedPeeps);
     props.setModalVisible(false);
-    props.setPeople((oldPeeps) => {
+    setPeople((oldPeeps) => {
       // filter out ones tha are not in removedIds
       const currDeletable = removedIds.includes(currId);
 
@@ -136,6 +140,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
         }
       })();
 
+      // find new index, curr will still exist when deleted
       const newIdx = newPeeps.findIndex((x) => {
         console.log(x.id, currId);
         return x.id == currId;
@@ -143,14 +148,13 @@ export function RemoveMdl(props: RemoveMdlProps) {
 
       if (currDeletable) {
         // finally delete the curr that's supposed to be deleted
+        // on deletion, the next available person will shift backwards and take its place
         newPeeps.splice(newIdx, 1);
       }
 
-      // update curr idx to id...
-      // newIdx will always have the current Idx even if it got deleted,
-      // thanks to above code in newPeeps
+      // update curr idx to id
       console.log("new idx", newIdx);
-      props.setCurr(newIdx % newPeeps.length);
+      setCurrIdx(newIdx % newPeeps.length);
 
       return newPeeps;
     });
@@ -167,7 +171,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <CheckboxList items={props.people} onSave={submit} />
+          <CheckboxList items={people} onSave={submit} />
           {/* <Button title="Save" onPress={submit} /> */}
         </View>
       </View>
@@ -176,6 +180,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
 }
 
 export function GeneralModal({ props }: GeneralMdlProps) {
+  const { people } = useContext(ModalContext);
   return (
     <Modal
       animationType="slide"
@@ -197,7 +202,7 @@ export function GeneralModal({ props }: GeneralMdlProps) {
           />
           {props.isAdding ? (
             <PersonPicker
-              people={props.people}
+              people={people}
               onChange={
                 props.setAddAfterId as React.Dispatch<
                   React.SetStateAction<number>
@@ -218,13 +223,9 @@ export function GeneralModal({ props }: GeneralMdlProps) {
 type ChildMdlProps = {
   modalVisible: boolean;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  people: PeepsList;
-  setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
 };
 
 type AddMdlProps = ChildMdlProps & {
-  curr: number;
-  setCurr: React.Dispatch<React.SetStateAction<number>>;
   addText: string;
   setAddText: React.Dispatch<React.SetStateAction<string>>;
   addAfterId: number;
@@ -232,7 +233,6 @@ type AddMdlProps = ChildMdlProps & {
 };
 
 type CreateNewMdlProps = ChildMdlProps & {
-  setId: React.Dispatch<React.SetStateAction<number>>;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
   setRounds: React.Dispatch<React.SetStateAction<number>>;
@@ -245,7 +245,6 @@ type GeneralMdlProps = {
     inputText: string;
     setInputText: React.Dispatch<React.SetStateAction<string>>;
     onSave: () => void;
-    people: PeepsList;
     isAdding: boolean;
     selected?: number;
     setAddAfterId?: React.Dispatch<React.SetStateAction<number>>;
@@ -258,11 +257,4 @@ type PersonPickerProps = {
   onChange: React.Dispatch<React.SetStateAction<number>>;
 };
 
-type RemoveMdlProps = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  people: PeepsList;
-  setPeople: React.Dispatch<React.SetStateAction<PeepsList>>;
-  curr: number;
-  setCurr: React.Dispatch<React.SetStateAction<number>>;
-};
+type RemoveMdlProps = ChildMdlProps;

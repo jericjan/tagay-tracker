@@ -8,10 +8,13 @@ import {
   Text,
   View,
 } from "react-native";
-import { MeasureProps, Orientation } from "../../types";
+import { Orientation, RootStackParamList } from "../../types";
 import { useRef, useState } from "react";
 import { styles as globalStyles } from "../../styles";
 import { DefaultBackground } from "../Background";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+
+type MeasureProps = BottomTabScreenProps<RootStackParamList, "Measure">;
 
 export default function MeasurePage({ navigation }: MeasureProps) {
   const { width, height } = Dimensions.get("window");
@@ -22,7 +25,6 @@ export default function MeasurePage({ navigation }: MeasureProps) {
   pan.addListener((val) => {
     panX.current = val.x;
     panY.current = val.y;
-    // console.log(val.x, val.y);
   });
   const [orientation, setOrientation] = useState("portrait" as Orientation);
   const orientRef = useRef("portrait" as Orientation); // used in Animated.event
@@ -106,7 +108,7 @@ export default function MeasurePage({ navigation }: MeasureProps) {
       fontSize: 14,
       lineHeight: 24,
       fontWeight: "bold",
-      color: "white"
+      color: "white",
     },
     box: {
       ...boxCss[orientation],
