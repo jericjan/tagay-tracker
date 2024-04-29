@@ -1,5 +1,3 @@
-
-
 import { Modal, View, TextInput, Button, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
@@ -154,8 +152,11 @@ export function RemoveMdl(props: RemoveMdlProps) {
 
       // update curr idx to id
       console.log("new idx", newIdx);
-      setCurrIdx(newIdx % newPeeps.length);
-
+      const correctedIdx = newIdx % newPeeps.length;
+      setCurrIdx(correctedIdx);
+      if (correctedIdx == 0) {
+        props.setRounds((i) => i + 1);
+      }
       return newPeeps;
     });
   };
@@ -237,6 +238,9 @@ type CreateNewMdlProps = ChildMdlProps & {
   setText: React.Dispatch<React.SetStateAction<string>>;
   setRounds: React.Dispatch<React.SetStateAction<number>>;
 };
+type RemoveMdlProps = ChildMdlProps & {
+  setRounds: React.Dispatch<React.SetStateAction<number>>;
+};
 
 type GeneralMdlProps = {
   props: {
@@ -256,5 +260,3 @@ type PersonPickerProps = {
   selected: number;
   onChange: React.Dispatch<React.SetStateAction<number>>;
 };
-
-type RemoveMdlProps = ChildMdlProps;

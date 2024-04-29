@@ -11,8 +11,8 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 type HomeProps = BottomTabScreenProps<RootStackParamList, "Home">;
 
-const Home = ({  navigation }: HomeProps) => {
-  const {statBarHidden, setStatBarHidden} = useContext(ScreenContext);
+const Home = ({ navigation }: HomeProps) => {
+  const { statBarHidden, setStatBarHidden } = useContext(ScreenContext);
   const [currIdx, setCurrIdx] = useState(0);
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
@@ -65,8 +65,6 @@ const Home = ({  navigation }: HomeProps) => {
     });
   };
 
-  
-
   return (
     <View style={styles.container}>
       <DefaultBackground>
@@ -87,7 +85,7 @@ const Home = ({  navigation }: HomeProps) => {
             title="Measure"
             onPress={() => {
               setStatBarHidden(true);
-              navigation.navigate("Measure",);
+              navigation.navigate("Measure");
             }}
           />
         </View>
@@ -136,6 +134,7 @@ const Home = ({  navigation }: HomeProps) => {
           <RemoveMdl
             modalVisible={remMdlVisible}
             setModalVisible={setRemMdlVisible}
+            setRounds={setRoundCount}
           />
         </ModalContext.Provider>
       </DefaultBackground>
