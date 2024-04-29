@@ -117,24 +117,24 @@ const Home = ({ navigation }: HomeProps) => {
           value={{ people, setPeople, currIdx, setCurrIdx }}
         >
           <CreateNewMdl
-            modalVisible={createMdlVisible}
-            setModalVisible={setCreateMdlVisible}
-            text={inputText}
-            setText={setInputText}
-            setRounds={setRoundCount}
+            modalVisible={createMdlVisible}  // not used in Home.tsx
+            setModalVisible={setCreateMdlVisible} // only used in button, could be ref'd
+            text={inputText}  // not used in Home.tsx
+            setText={setInputText}    // only used in button, could be ref'd
+            setRounds={setRoundCount}  // used in next button, might stay
           />
           <AddMdl
-            modalVisible={addMdlVisible}
-            setModalVisible={setAddMdlVisible}
-            addText={addText}
-            setAddText={setAddText}
-            addAfterId={addAfterId}
-            setAddAfterId={setAddAfterId}
+            modalVisible={addMdlVisible} // not used in Home.tsx
+            setModalVisible={setAddMdlVisible} // only used in button, could be ref'd
+            addText={addText}  // not used in Home.tsx
+            setAddText={setAddText}  // could be ref'd
+            addAfterId={addAfterId} // not used in Home.tsx
+            setAddAfterId={setAddAfterId}   // could be ref'd
           />
           <RemoveMdl
-            modalVisible={remMdlVisible}
-            setModalVisible={setRemMdlVisible}
-            setRounds={setRoundCount}
+            modalVisible={remMdlVisible} // not used in Home.tsx
+            setModalVisible={setRemMdlVisible} // only used in button, could be ref'd
+            setRounds={setRoundCount}  // used in next button, might stay
           />
         </ModalContext.Provider>
       </DefaultBackground>

@@ -47,7 +47,6 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
       props={{
         ...props,
         modalVisible,
-        isAdding: false,
         onSave: createSave,
         inputText: props.text,
         setInputText: props.setText,
@@ -58,7 +57,7 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
 
 export function AddMdl(props: AddMdlProps) {
   const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
-  const { modalVisible, setAddAfterId } = props; // prop drill :(
+  const { modalVisible } = props; // prop drill :(
   const add = () => {
     const newPeeps = props.addText
       .trim()
@@ -103,15 +102,20 @@ export function AddMdl(props: AddMdlProps) {
     <GeneralModal
       props={{
         ...props,
-        isAdding: true,
         onSave: add,
         inputText: props.addText,
         setInputText: props.setAddText,
-        selected: props.addAfterId,
         modalVisible,
-        setAddAfterId,
       }}
-    />
+    >
+      <PersonPicker
+        people={people}
+        onChange={
+          props.setAddAfterId as React.Dispatch<React.SetStateAction<number>>
+        }
+        selected={props.addAfterId as number}
+      />
+    </GeneralModal>
   );
 }
 
@@ -180,8 +184,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
   );
 }
 
-export function GeneralModal({ props }: GeneralMdlProps) {
-  const { people } = useContext(ModalContext);
+export function GeneralModal({ props, children }: GeneralMdlProps) {
   return (
     <Modal
       animationType="slide"
@@ -201,19 +204,7 @@ export function GeneralModal({ props }: GeneralMdlProps) {
             value={props.inputText}
             onChangeText={(text) => props.setInputText(text)}
           />
-          {props.isAdding ? (
-            <PersonPicker
-              people={people}
-              onChange={
-                props.setAddAfterId as React.Dispatch<
-                  React.SetStateAction<number>
-                >
-              }
-              selected={props.selected as number}
-            />
-          ) : (
-            <></>
-          )}
+          {children ? children : <></>}
           <Button title="Save" onPress={props.onSave} />
         </View>
       </View>
@@ -249,10 +240,8 @@ type GeneralMdlProps = {
     inputText: string;
     setInputText: React.Dispatch<React.SetStateAction<string>>;
     onSave: () => void;
-    isAdding: boolean;
-    selected?: number;
-    setAddAfterId?: React.Dispatch<React.SetStateAction<number>>;
   };
+  children?: JSX.Element[] | JSX.Element;
 };
 
 type PersonPickerProps = {
