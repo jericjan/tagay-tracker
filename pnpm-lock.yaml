@@ -24,8 +24,8 @@ dependencies:
     specifier: ^6.9.26
     version: 6.9.26(@react-navigation/native@6.1.17)(react-native-safe-area-context@4.8.2)(react-native-screens@3.29.0)(react-native@0.73.6)(react@18.2.0)
   '@types/react':
-    specifier: ^18.3.1
-    version: 18.3.1
+    specifier: ^18.2.79
+    version: 18.2.79
   eas-cli:
     specifier: ^7.8.4
     version: 7.8.4(@types/node@20.12.7)(expo-modules-autolinking@1.10.3)(typescript@5.4.5)
@@ -3150,8 +3150,8 @@ packages:
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
     dev: false
 
-  /@types/react@18.3.1:
-    resolution: {integrity: sha512-V0kuGBX3+prX+DQ/7r2qsv1NsdfnCLnTgnRJ1pYnxykBhGMz+qj+box5lq7XsO5mtZsBqpjwwTu/7wszPfMBcw==}
+  /@types/react@18.2.79:
+    resolution: {integrity: sha512-RwGAGXPl9kSXwdNTafkOEuFrTBD5SA2B3iEB96xi8+xu5ddUa/cpvyVCSNn+asgLCTHkb5ZxN8gbuibYJi4s1w==}
     dependencies:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3

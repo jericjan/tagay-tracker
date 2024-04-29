@@ -17,7 +17,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.2.79",
     "eas-cli": "^7.8.4",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
