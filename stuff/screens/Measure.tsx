@@ -3,20 +3,21 @@ import {
   Button,
   Dimensions,
   PanResponder,
-  StatusBar,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 import { Orientation, RootStackParamList } from "../../types";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { styles as globalStyles } from "../../styles";
 import { DefaultBackground } from "../Background";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-
+import { ScreenContext } from "../Contexts";
+import { StatusBar } from "expo-status-bar";
 type MeasureProps = BottomTabScreenProps<RootStackParamList, "Measure">;
 
 export default function MeasurePage({ navigation }: MeasureProps) {
+  const { statBarHidden, setStatBarHidden } = useContext(ScreenContext);
   const { width, height } = Dimensions.get("window");
 
   const pan = useRef(new Animated.ValueXY()).current;
@@ -131,11 +132,27 @@ export default function MeasurePage({ navigation }: MeasureProps) {
 
   return (
     <View style={styles.container}>
-      <StatusBar animated={true} hidden={true} />
+      {statBarHidden ? (
+        <StatusBar
+          animated={false}
+          translucent={false}
+          backgroundColor="#ffffff"
+          style="dark"
+          hidden={true}
+        />
+      ) : (
+        <></>
+      )}
       <DefaultBackground opacity={0.5}>
         <View style={{ ...styles.button, ...globalStyles.horizontalButCenter }}>
           <Button title="Rotate" onPress={rotate} />
-          <Button title="Back" onPress={() => navigation.navigate("Home")} />
+          <Button
+            title="Back"
+            onPress={() => {
+              setStatBarHidden(false);
+              navigation.navigate("Home");
+            }}
+          />
         </View>
         <Text style={styles.titleText}>Drag anywhere on the screen!</Text>
         <View style={styles.draggableContainer} {...panResponder.panHandlers}>

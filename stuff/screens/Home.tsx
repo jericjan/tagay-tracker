@@ -1,23 +1,25 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { PeepsList, RootStackParamList } from "../../types";
-import { Button, StatusBar, View } from "react-native";
+import { Button, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { styles } from "../../styles";
 import { List } from "../List";
 import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
 import { DefaultBackground } from "../Background";
-import { ModalContext } from "../Contexts";
+import { ModalContext, ScreenContext } from "../Contexts";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 type HomeProps = BottomTabScreenProps<RootStackParamList, "Home">;
 
-const Home = ({ navigation }: HomeProps) => {
+const Home = ({  navigation }: HomeProps) => {
+  const {statBarHidden, setStatBarHidden} = useContext(ScreenContext);
   const [currIdx, setCurrIdx] = useState(0);
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
 
   const [createMdlVisible, setCreateMdlVisible] = useState(false);
   const [inputText, setInputText] = useState("");
-  
+
   function createNew() {
     setInputText("");
     setCreateMdlVisible(true);
@@ -63,19 +65,30 @@ const Home = ({ navigation }: HomeProps) => {
     });
   };
 
+  
+
   return (
     <View style={styles.container}>
       <DefaultBackground>
-        <StatusBar
-          animated={true}
-          backgroundColor="#ffffff"
-          barStyle="dark-content"
-        />
+        {!statBarHidden ? (
+          <StatusBar
+            // animated={false}
+            translucent={false}
+            backgroundColor="#ffffff"
+            // style="dark"
+            hidden={false}
+          />
+        ) : (
+          <></>
+        )}
         <Button title="Create New" onPress={createNew} />
         <View style={styles.measureBtn}>
           <Button
             title="Measure"
-            onPress={() => navigation.navigate("Measure")}
+            onPress={() => {
+              setStatBarHidden(true);
+              navigation.navigate("Measure",);
+            }}
           />
         </View>
         {people.length ? (

@@ -9,3 +9,10 @@ type ModalContextType = {
 };
 
 export const ModalContext = createContext({} as ModalContextType);
+
+type screenCtx = {
+  statBarHidden: boolean;
+  setStatBarHidden: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const ScreenContext = createContext({} as screenCtx);
