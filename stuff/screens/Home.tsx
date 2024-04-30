@@ -8,6 +8,7 @@ import { AddMdl, CreateNewMdl, RemoveMdl } from "../Modals";
 import { DefaultBackground } from "../Background";
 import { ModalContext, ScreenContext } from "../Contexts";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { InfoBox } from "../Info";
 
 type HomeProps = BottomTabScreenProps<RootStackParamList, "Home">;
 
@@ -54,11 +55,12 @@ const Home = ({ navigation }: HomeProps) => {
             translucent={false}
             backgroundColor="#ffffff"
             // style="dark"
-            hidden={false}
+            hidden={true}
           />
         ) : (
           <></>
         )}
+        <InfoBox />
         <Button
           title="Create New"
           onPress={() => {

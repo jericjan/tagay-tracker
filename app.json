@@ -41,7 +41,8 @@
             "enableShrinkResourcesInReleaseBuilds": true
           }
         }
-      ]
+      ],
+      "expo-localization"
     ]
   }
 }

@@ -225,7 +225,7 @@ export function GeneralModal({ props, children }: GeneralMdlProps) {
             style={styles.textInput}
             multiline={true}
             numberOfLines={4}
-            placeholder="Enter text..."
+            placeholder="Enter a list of names separated by line breaks..."
             value={props.inputText}
             onChangeText={(text) => props.setInputText(text)}
           />

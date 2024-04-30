@@ -81,4 +81,18 @@ export const styles = StyleSheet.create({
   onTop: {
     zIndex: 999,
   },
+  clock: {
+    color: "white",
+
+    fontSize: 50,
+    textShadowColor: "#000",
+    textShadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.58,
+    textShadowRadius: 7.0,
+
+    elevation: 24,
+  },
 });
