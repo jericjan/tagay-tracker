@@ -109,11 +109,11 @@ const Home = ({ navigation }: HomeProps) => {
           <></>
         )}
         <ModalContext.Provider
-          value={{ people, setPeople, currIdx, setCurrIdx }}
+          value={{ people, setPeople, currIdx, setCurrIdx, setRoundCount }}
         >
-          <CreateNewMdl btnClick={createBtnClick} setRounds={setRoundCount} />
+          <CreateNewMdl btnClick={createBtnClick} />
           <AddMdl btnClick={addBtnClick} />
-          <RemoveMdl btnClick={RemoveBtnClick} setRounds={setRoundCount} />
+          <RemoveMdl btnClick={RemoveBtnClick} />
         </ModalContext.Provider>
       </DefaultBackground>
     </View>

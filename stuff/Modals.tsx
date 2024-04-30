@@ -30,7 +30,7 @@ function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
 export function CreateNewMdl(props: CreateNewMdlProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [inputText, setInputText] = useState("");
-  const { setPeople, setCurrIdx } = useContext(ModalContext);
+  const { setPeople, setCurrIdx, setRoundCount } = useContext(ModalContext);
   useEffect(() => {
     props.btnClick.current = () => {
       setInputText("");
@@ -47,7 +47,7 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
     setPeople(peepsDict);
     setModalVisible(false);
     setCurrIdx(0);
-    props.setRounds(0);
+    setRoundCount(0);
   };
 
   return (
@@ -138,6 +138,8 @@ export function AddMdl(props: AddMdlProps) {
 
 export function RemoveMdl(props: RemoveMdlProps) {
   const [modalVisible, setModalVisible] = useState(false);
+  const { people, setPeople, currIdx, setCurrIdx, setRoundCount } =
+    useContext(ModalContext);
 
   useEffect(() => {
     props.btnClick.current = () => {
@@ -145,7 +147,6 @@ export function RemoveMdl(props: RemoveMdlProps) {
     };
   }, []);
 
-  const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
   const submit = (removedPeeps: PeepsList) => {
     // ID !== idx
     const currId = people[currIdx].id;
@@ -184,7 +185,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
       const correctedIdx = newIdx % newPeeps.length;
       setCurrIdx(correctedIdx);
       if (correctedIdx == 0) {
-        props.setRounds((i) => i + 1);
+        setRoundCount((i) => i + 1);
       }
       return newPeeps;
     });
@@ -241,11 +242,8 @@ type InitialMdlProps = {
 };
 
 type AddMdlProps = InitialMdlProps;
-
-type CreateNewMdlProps = InitialMdlProps & {
-  setRounds: React.Dispatch<React.SetStateAction<number>>;
-};
-type RemoveMdlProps = CreateNewMdlProps;
+type CreateNewMdlProps = InitialMdlProps;
+type RemoveMdlProps = InitialMdlProps;
 
 type GeneralMdlProps = {
   props: {
