@@ -32,7 +32,6 @@ export const People = (props: PeopleProps) => {
   const isCurr = props.curr == props.idx;
 
   useEffect(() => {
-    //code here
     if (isCurr && textLayout.current) {
       props.scrollViewRef.current?.scrollTo({
         y: textLayout.current.y,

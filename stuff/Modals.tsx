@@ -4,7 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import { PeepsList } from "../types";
 import { styles } from "../styles";
 import { CheckboxList } from "./CheckBox";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "./Contexts";
 
 function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
@@ -28,16 +28,24 @@ function PersonPicker({ people, selected, onChange }: PersonPickerProps) {
 }
 
 export function CreateNewMdl(props: CreateNewMdlProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [inputText, setInputText] = useState("");
   const { setPeople, setCurrIdx } = useContext(ModalContext);
-  const { modalVisible } = props; // prop drill :(
+  useEffect(() => {
+    props.btnClick.current = () => {
+      setInputText("");
+      setModalVisible(true);
+    };
+  }, []);
+
   const createSave = () => {
-    const peeps = props.text.trim().split("\n");
+    const peeps = inputText.trim().split("\n");
     const filteredPeeps = peeps.filter((str) => str.trim() != "");
     const peepsDict: PeepsList = filteredPeeps.map((p, idx) => {
       return { id: idx, name: p, isCurrent: idx == 0 ? true : false, count: 0 };
     });
     setPeople(peepsDict);
-    props.setModalVisible(false);
+    setModalVisible(false);
     setCurrIdx(0);
     props.setRounds(0);
   };
@@ -45,21 +53,32 @@ export function CreateNewMdl(props: CreateNewMdlProps) {
   return (
     <GeneralModal
       props={{
-        ...props,
+        setModalVisible,
         modalVisible,
         onSave: createSave,
-        inputText: props.text,
-        setInputText: props.setText,
+        inputText,
+        setInputText,
       }}
     />
   );
 }
 
 export function AddMdl(props: AddMdlProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [inputText, setInputText] = useState("");
+  const [addAfterId, setAddAfterId] = useState(-1);
   const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
-  const { modalVisible } = props; // prop drill :(
+
+  useEffect(() => {
+    props.btnClick.current = () => {
+      setInputText("");
+      setAddAfterId(-1);
+      setModalVisible(true);
+    };
+  }, []);
+
   const add = () => {
-    const newPeeps = props.addText
+    const newPeeps = inputText
       .trim()
       .split("\n")
       .filter((str) => str.trim() != "");
@@ -78,11 +97,11 @@ export function AddMdl(props: AddMdlProps) {
 
     setPeople((oldList) => {
       const insertIdx = (() => {
-        if (props.addAfterId == -1) {
+        if (addAfterId == -1) {
           return people.length - 1;
         } else {
           return oldList.findIndex((x) => {
-            return x.id == props.addAfterId;
+            return x.id == addAfterId;
           });
         }
       })();
@@ -92,34 +111,40 @@ export function AddMdl(props: AddMdlProps) {
       }
 
       oldList.splice(insertIdx + 1, 0, ...newPeepsList);
-      return oldList;
+      return [...oldList];
     });
 
-    props.setModalVisible(false);
+    setModalVisible(false);
   };
 
   return (
     <GeneralModal
       props={{
-        ...props,
         onSave: add,
-        inputText: props.addText,
-        setInputText: props.setAddText,
+        inputText,
+        setInputText,
         modalVisible,
+        setModalVisible,
       }}
     >
       <PersonPicker
         people={people}
-        onChange={
-          props.setAddAfterId as React.Dispatch<React.SetStateAction<number>>
-        }
-        selected={props.addAfterId as number}
+        onChange={setAddAfterId as React.Dispatch<React.SetStateAction<number>>}
+        selected={addAfterId as number}
       />
     </GeneralModal>
   );
 }
 
 export function RemoveMdl(props: RemoveMdlProps) {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    props.btnClick.current = () => {
+      setModalVisible(true);
+    };
+  }, []);
+
   const { people, setPeople, currIdx, setCurrIdx } = useContext(ModalContext);
   const submit = (removedPeeps: PeepsList) => {
     // ID !== idx
@@ -127,7 +152,7 @@ export function RemoveMdl(props: RemoveMdlProps) {
 
     const removedIds = removedPeeps.map((x) => x.id);
     console.log(removedPeeps);
-    props.setModalVisible(false);
+    setModalVisible(false);
     setPeople((oldPeeps) => {
       // filter out ones tha are not in removedIds
       const currDeletable = removedIds.includes(currId);
@@ -169,15 +194,14 @@ export function RemoveMdl(props: RemoveMdlProps) {
     <Modal
       animationType="slide"
       transparent={true}
-      visible={props.modalVisible}
+      visible={modalVisible}
       onRequestClose={() => {
-        props.setModalVisible(false);
+        setModalVisible(false);
       }}
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <CheckboxList items={people} onSave={submit} />
-          {/* <Button title="Save" onPress={submit} /> */}
         </View>
       </View>
     </Modal>
@@ -212,26 +236,16 @@ export function GeneralModal({ props, children }: GeneralMdlProps) {
   );
 }
 
-type ChildMdlProps = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+type InitialMdlProps = {
+  btnClick: React.MutableRefObject<() => void>;
 };
 
-type AddMdlProps = ChildMdlProps & {
-  addText: string;
-  setAddText: React.Dispatch<React.SetStateAction<string>>;
-  addAfterId: number;
-  setAddAfterId: React.Dispatch<React.SetStateAction<number>>;
-};
+type AddMdlProps = InitialMdlProps;
 
-type CreateNewMdlProps = ChildMdlProps & {
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
+type CreateNewMdlProps = InitialMdlProps & {
   setRounds: React.Dispatch<React.SetStateAction<number>>;
 };
-type RemoveMdlProps = ChildMdlProps & {
-  setRounds: React.Dispatch<React.SetStateAction<number>>;
-};
+type RemoveMdlProps = CreateNewMdlProps;
 
 type GeneralMdlProps = {
   props: {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { PeepsList, RootStackParamList } from "../../types";
 import { Button, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
@@ -17,29 +17,9 @@ const Home = ({ navigation }: HomeProps) => {
   const [people, setPeople] = useState([] as PeepsList);
   const [roundCount, setRoundCount] = useState(0);
 
-  const [createMdlVisible, setCreateMdlVisible] = useState(false);
-  const [inputText, setInputText] = useState("");
-
-  function createNew() {
-    setInputText("");
-    setCreateMdlVisible(true);
-  }
-
-  const [addMdlVisible, setAddMdlVisible] = useState(false);
-  const [addText, setAddText] = useState("");
-  const [addAfterId, setAddAfterId] = useState(-1);
-
-  const add = () => {
-    setAddText("");
-    setAddAfterId(-1);
-    setAddMdlVisible(true);
-  };
-
-  const [remMdlVisible, setRemMdlVisible] = useState(false);
-
-  const remove = () => {
-    setRemMdlVisible(true);
-  };
+  const createBtnClick = useRef(() => {});
+  const addBtnClick = useRef(() => {});
+  const RemoveBtnClick = useRef(() => {});
 
   const next = (skip: boolean = false) => {
     const length = people.length;
@@ -79,7 +59,12 @@ const Home = ({ navigation }: HomeProps) => {
         ) : (
           <></>
         )}
-        <Button title="Create New" onPress={createNew} />
+        <Button
+          title="Create New"
+          onPress={() => {
+            createBtnClick.current();
+          }}
+        />
         <View style={styles.measureBtn}>
           <Button
             title="Measure"
@@ -92,8 +77,18 @@ const Home = ({ navigation }: HomeProps) => {
         {people.length ? (
           <>
             <View style={styles.horizontalButCenter}>
-              <Button title="Add" onPress={add} />
-              <Button title="Remove" onPress={remove} />
+              <Button
+                title="Add"
+                onPress={() => {
+                  addBtnClick.current();
+                }}
+              />
+              <Button
+                title="Remove"
+                onPress={() => {
+                  RemoveBtnClick.current();
+                }}
+              />
             </View>
             <View style={{ ...styles.horizontal, ...styles.onTop }}>
               <View style={styles.button}>
@@ -116,26 +111,9 @@ const Home = ({ navigation }: HomeProps) => {
         <ModalContext.Provider
           value={{ people, setPeople, currIdx, setCurrIdx }}
         >
-          <CreateNewMdl
-            modalVisible={createMdlVisible}  // not used in Home.tsx
-            setModalVisible={setCreateMdlVisible} // only used in button, could be ref'd
-            text={inputText}  // not used in Home.tsx
-            setText={setInputText}    // only used in button, could be ref'd
-            setRounds={setRoundCount}  // used in next button, might stay
-          />
-          <AddMdl
-            modalVisible={addMdlVisible} // not used in Home.tsx
-            setModalVisible={setAddMdlVisible} // only used in button, could be ref'd
-            addText={addText}  // not used in Home.tsx
-            setAddText={setAddText}  // could be ref'd
-            addAfterId={addAfterId} // not used in Home.tsx
-            setAddAfterId={setAddAfterId}   // could be ref'd
-          />
-          <RemoveMdl
-            modalVisible={remMdlVisible} // not used in Home.tsx
-            setModalVisible={setRemMdlVisible} // only used in button, could be ref'd
-            setRounds={setRoundCount}  // used in next button, might stay
-          />
+          <CreateNewMdl btnClick={createBtnClick} setRounds={setRoundCount} />
+          <AddMdl btnClick={addBtnClick} />
+          <RemoveMdl btnClick={RemoveBtnClick} setRounds={setRoundCount} />
         </ModalContext.Provider>
       </DefaultBackground>
     </View>
